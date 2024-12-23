@@ -16,9 +16,13 @@ import {
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useAuth } from "@/hooks/AuthContext";
 import { supabase } from "@/lib/supabase";
+import { router, useRouter } from "expo-router";
+
 
 const Home = () => {
   const { setAuth } = useAuth();
+  const router = useRouter(); // Initialize the router
+
 
   const onLogout = async () => {
     setAuth(null);
@@ -96,14 +100,12 @@ const Home = () => {
           <Ionicons name="log-out-outline" size={30} color="black" />
         </TouchableOpacity>
       </View>
-
       {/* Search Bar */}
       <TextInput
         placeholder="Search"
         placeholderTextColor="#999"
         style={styles.searchBar}
       />
-
       {/* ScrollView for Featured Content */}
       <ScrollView
         horizontal
@@ -118,7 +120,6 @@ const Home = () => {
           />
         ))}
       </ScrollView>
-
       {/* Categories Section */}
       <Text style={styles.sectionTitle}>Categories</Text>
       {data.length > 0 ? (
@@ -129,7 +130,10 @@ const Home = () => {
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
             <TouchableOpacity style={styles.categoryCard}>
-              <Image source={{ uri: item.image }} style={styles.categoryImage} />
+              <Image
+                source={{ uri: item.image }}
+                style={styles.categoryImage}
+              />
               <Text style={styles.categoryTitle}>
                 {item.name || item.title}
               </Text>
@@ -143,16 +147,26 @@ const Home = () => {
           color="#ed7014"
         />
       )}
-
       {/* Items on Sale Section */}
       <Text style={styles.sectionTitle}>Items on Sale</Text>
       <View style={styles.gridContainer}>
         {saleData.map((item) => (
-          <TouchableOpacity key={item.id} style={styles.saleCard}>
+          <TouchableOpacity
+            key={item.id}
+            style={styles.saleCard}
+            onPress={() =>
+              router.push({ pathname: "/ProductDetails", params: { item } })
+            }
+          >
             <Image source={{ uri: item.image }} style={styles.saleImage} />
             <Text style={styles.saleTitle}>{item.name}</Text>
-            <Text style={styles.originalPrice}>Original Price: ${item.originalPrice}</Text>
+            <Text style={styles.originalPrice}>
+              Original Price: ${item.originalPrice}
+            </Text>
             <Text style={styles.salePrice}>Sale Price: ${item.salePrice}</Text>
+            <TouchableOpacity style={styles.addToCartButton}>
+              <Text style={styles.buttonText}>Add to Cart</Text>
+            </TouchableOpacity>
           </TouchableOpacity>
         ))}
       </View>
@@ -184,8 +198,8 @@ const styles = StyleSheet.create({
   profileButton: {
     height: 50,
     width: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   searchBar: {
     height: 50,
@@ -226,7 +240,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     color: "#000",
-    textAlign: 'center',
+    textAlign: "center",
   },
   gridContainer: {
     flexDirection: "row",
@@ -260,6 +274,18 @@ const styles = StyleSheet.create({
   salePrice: {
     fontSize: 16,
     color: "#ff3d00",
+  },
+  addToCartButton: {
+    backgroundColor: "#ed7014",
+    padding: 10,
+    borderRadius: 5,
+    alignItems: "center",
+    marginTop: 5,
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });
 
