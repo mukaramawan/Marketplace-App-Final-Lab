@@ -1,5 +1,3 @@
-// app/ProductDetails.js
-
 import React from "react";
 import {
   View,
@@ -9,10 +7,19 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
+import { useRouter } from "expo-router";
 
-const ProductDetails = ({ route }) => {
-  const { item } = route.params; 
+const ProductDetails = () => {
+  const router = useRouter();
+  const params = router.params; // Get params
+  const item = params?.item; // Safely access item
 
+  if (!item) {
+    // Handle the case where item is undefined
+    return <Text>Error: Item not found</Text>;
+  }
+
+  // Render the component if item is found
   return (
     <ScrollView style={styles.container}>
       <Image source={{ uri: item.image }} style={styles.productImage} />

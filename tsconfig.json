@@ -13,5 +13,5 @@
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
-  ]
+, "components/FeaturedContent.jsx", "components/Categories.jsx", "components/ItemsOnSale.jsx", "app/screens/Login.jsx", "app/screens/Signup..jsx", "app/(main)/ProductDetails.jsx"  ]
 }
